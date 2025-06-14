@@ -1,21 +1,30 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
-import './index.css';
-
+import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
+import Home from './pages/Home';
+import Login from './pages/Login';
+import Categories from './pages/Categories';
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      <div className='min-h-screen p-6'>
-        <h1 className='text-3x1 font-bold mb-4 text-center'>E-Library</h1>
-        {/* {Home} */}
-      </div>
-    </>
-  )
+    <BrowserRouter>
+      {/* Navbar */}
+      <nav className="fixed top-0 w-full z-50 bg-gray-900 text-white p-4 flex justify-between items-center shadow-md">
+        <div className="text-xl font-bold">📚 E-Library</div>
+        <ul className="flex space-x-6">
+          <li><Link to="/home" className="hover:text-blue-400">Home</Link></li>
+          <li><Link to="/" className="hover:text-blue-400">Login</Link></li>
+          <li><Link to="/categories" className="hover:text-blue-400">Categories</Link></li>
+        </ul>
+      </nav>
+
+      {/* Routes */}
+      <Routes>
+        <Route path="/home" element={<Home />} />
+        <Route path="/" element={<Login />} />
+        <Route path="/categories" element={<Categories />} />
+      </Routes>
+    </BrowserRouter>
+  );
 }
 
-export default App
+export default App;
