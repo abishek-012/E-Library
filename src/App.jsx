@@ -3,6 +3,11 @@ import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Categories from './pages/Categories';
+import BookForm from './components/BookForm';
+import AdminLogin from './pages/AdminLogin';
+import BorrowBook from './pages/BorrowBook';
+import EditButton from "./components/EditButton";
+
 
 function App() {
   return (
@@ -14,6 +19,10 @@ function App() {
           <li><Link to="/home" className="hover:text-blue-400">Home</Link></li>
           <li><Link to="/" className="hover:text-blue-400">Login</Link></li>
           <li><Link to="/categories" className="hover:text-blue-400">Categories</Link></li>
+          <li><Link to="/borrowbook" className="hover:text-blue-400">Borrow Book</Link></li>
+          <li><Link to="/adminlogin" className="hover:text-blue-400">Admin Login</Link></li>
+
+
         </ul>
       </nav>
 
@@ -22,6 +31,9 @@ function App() {
         <Route path="/home" element={<Home />} />
         <Route path="/" element={<Login />} />
         <Route path="/categories" element={<Categories />} />
+        <Route path="/borrowbook" element={<BorrowBook />} />
+        <Route path="/adminlogin" element={<AdminLogin />} />
+        <Route path="/edit/:id" element={<EditButton />} />
       </Routes>
     </BrowserRouter>
   );

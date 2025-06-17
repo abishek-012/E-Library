@@ -1,8 +1,8 @@
 function Login() {
   return (
-    <div className=" w-screen min-h-screen flex items-center justify-center bg-gray-100 pt-16">
+    <div className=" w-screen rounded shadow-md min-h-screen flex items-center justify-center bg-gray-100 pt-16">
       <div className="bg-white p-8 rounded shadow-md w-full max-w-sm">
-        <h2 className="text-2xl font-bold mb-4 text-center">Login</h2>
+        <h2 className="text-3xl font-bold mb-4 text-center">Login</h2>
         <form className="space-y-4">
           <input
             type="email"
@@ -16,7 +16,7 @@ function Login() {
           />
           <button
             type="submit"
-            className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600"
+            className="w-full bg-black text-white py-2 rounded hover:bg-blue-600"
           >
             Login
           </button>
