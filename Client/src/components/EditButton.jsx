@@ -7,7 +7,7 @@ function EditButton() {
   const [book, setBook] = useState(null);
   
   useEffect(() => {
-    fetch(`${import.meta.env.VITE_BACKEND_URL}/api/users/${_id}`).then((res) => {
+    fetch(`${import.meta.env.VITE_BACKEND_URL}/api/users/${id}`).then((res) => {
       if(!res.ok) throw new Error(`Failed to fetch user details`);
       return res.json()
     }).then((data) => {
