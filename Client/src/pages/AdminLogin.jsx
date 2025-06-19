@@ -28,7 +28,7 @@ function AdminLogin() {
         <p className="text-black p-2 rounded">No books issued yet.</p>
       ) : (
         books.map((b) => (
-          <BookCard key={b.id} book={b} onDelete={handleDelete} />
+          <BookCard key={b._id} book={b} onDelete={handleDelete} />
         ))
       )}
     </div>
