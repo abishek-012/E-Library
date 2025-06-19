@@ -5,14 +5,21 @@ function AdminLogin() {
   const [books, setBooks] = useState([]);
 
   useEffect(() => {
-    const stored = JSON.parse(localStorage.getItem('borrowedBooks')) || [];
-    setBooks(stored);
+      fetch('${import.meta.env.VITE_BACKEND_URL}/api/users')
+      .then((res) => res.json())
+      .then((data) => setBooks(data))
+      .catch((error) => {
+        console.error('Error fetching user details: ', error);
+        alert('Failed to fetch User details. Please try again.');
+      });
   }, []);
 
-  const handleDelete = (id) => {
-    const updated = books.filter((b) => b.id !== id);
-    localStorage.setItem('borrowedBooks', JSON.stringify(updated));
-    setBooks(updated);
+  const handleDelete = async(id) => {
+    await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/users/${id}`, {
+      method: 'DELETE',
+    });
+    setBooks((prev) => prev.filter((book) => book._id!== id));
+    alert('Book deleted successfully.');
   };
 
   return (

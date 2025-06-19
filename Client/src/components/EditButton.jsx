@@ -3,30 +3,29 @@ import { useNavigate, useParams } from "react-router-dom";
 import BookForm from "../components/BookForm";
 
 function EditButton() {
-  const navigate = useNavigate();
   const { id } = useParams();
   const [book, setBook] = useState(null);
-
+  
   useEffect(() => {
-    const books = JSON.parse(localStorage.getItem("borrowedBooks")) || [];
-    const found = books.find((b) => b.id === parseInt(id));
-    if (!found) return navigate("/adminlogin");
-    setBook(found);
-  }, [id, navigate]);
+    fetch(`${import.meta.env.VITE_BACKEND_URL}/api/users/${id}`).then((res) => {
+      if(!res.ok) throw new Error(`Failed to fetch user details`);
+      return res.json()
+    }).then((data) => {
+      setBook(data);
+    }).catch((error) => {
+      console.error(`Error fetching book: `, error);
+      alert("Failed to fetch user details. Please try again.");
+    });
+  }, [id]);
 
-  const handleUpdate = (updatedBook) => {
-    const stored = JSON.parse(localStorage.getItem("borrowedBooks")) || [];
-    const updated = stored.map((b) => b.id === parseInt(id) ? updatedBook : b);
-    localStorage.setItem("borrowedBooks", JSON.stringify(updated));
-    navigate("/adminlogin");
-  };
+
 
   return (
     <div>
-      <h2 className="text-2xl font-bold text-center mt-8 mb-4">Edit Issued Book</h2>
-      {book && <BookForm initialData={book} onAdd={handleUpdate} />}
+      {book && <BookForm initialData={book}/>}
     </div>
   );
-}
+};
+
 
 export default EditButton;

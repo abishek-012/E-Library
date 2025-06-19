@@ -1,3 +1,4 @@
+import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 function Login() {
   return (
     <div className="bg-[url('/bg.png')] bg-cover bg-center min-h-screen flex items-center justify-center bg-gray-100 pt-16">
@@ -20,6 +21,10 @@ function Login() {
           >
             Login
           </button>
+          <p className="text-center text-sm text-gray-500">
+            Don't have an account? <Link to="/signup" className="text-blue-500 hover:underline">Sign Up</Link>
+
+          </p>
         </form>
       </div>
     </div>

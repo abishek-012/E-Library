@@ -1,61 +1,57 @@
+require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
-const fs = require('fs');
-const path = require('path');
+const mongoose = require('mongoose');
+const User = require('./models/Users');
+const Login = require('./models/Login');
+
 
 const app = express();
-const PORT = 5000;
-const DATA_PATH = path.join(__dirname, 'data', 'users.json');
+const PORT = process.env.PORT || 5000;
 
 app.use(cors());
 app.use(express.json());
 
-const readUsers = () => JSON.parse(fs.readFileSync(DATA_PATH));
-const writeUsers = (data) => fs.writeFileSync(DATA_PATH, JSON.stringify(data, null, 2));
+mongoose.connect(process.env.MONGO_URI)
+    .then(() => {console.log('Connected to MongoDB!');
+})  
+    .catch((error) => console.error('Error connecting to MongoDB:', error.message));
+
 
 app.get('/', (req, res) => {
     res.send('API is running!');
 });
 
-app.get('/api/users', (req, res) => {
-    try {
-        const users = readUsers();
-        res.json(users);
-    } catch (error) {
-        res.status(500).json({ message: 'Error reading users data.' });
-    }
+app.get('/api/users', async (req, res) => {
+    const users = await User.find({});
+    res.json(users);
 });
 
-app.get('/api/users/:id', (req, res) => {
-    const users = readUsers();
-    const user = users.find((s) => s.id === parseInt(req.params.id));
-    if (user) {
-        res.json(user);
-    } else {
-        res.status(404).json({ message: 'User not found.' });
-    }
+app.get('/api/users/:id',async(req, res) => {
+    const user = await User.findById(req.params.id);
+    if (user) res.json(user);
+    else res.status(404).json({ message: 'User not found.' });
 });
 
-app.post('/api/users', (req, res) => {
-    const users = readUsers();
-    const newUser = { ...req.body, id: Date.now() };
-    users.push(newUser);
-    writeUsers(users);
-    res.status(201).json(newUser);
+app.get('/api/login/:id',async(req, res) => {
+    const login = await Login.findById(req.params.id);
+    if (login) res.json(login);
+    else res.status(404).json({ message: 'User not found.' });
 });
 
-app.put('/api/users/:id', (req, res) => {
-    let users = readUsers();
-    const id = parseInt(req.params.id);
-    users = users.map((s) => (s.id === id ? { ...s, ...req.body } : s));
-    writeUsers(users);
-    res.json({ message: 'User details updated successfully.' });
+app.post('/api/users', async(req, res) => {
+    const newUser = new User(req.body);
+    await newUser.save();
+    res.status(201).json({ message: 'User created successfully.', user : newUser });
 });
 
-app.delete('/api/users/:id', (req, res) => {
-    let users = readUsers();
-    users = users.filter((s) => s.id !== parseInt(req.params.id));
-    writeUsers(users);
+app.put('/api/users/:id', async(req, res) => {
+    await User.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    res.json({ message: 'User updated successfully.' });
+});
+
+app.delete('/api/users/:id', async(req, res) => {
+    await User.findByIdAndDelete(req.params.id);
     res.json({ message: 'User deleted successfully.' });
 });
 
