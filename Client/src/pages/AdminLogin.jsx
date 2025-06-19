@@ -5,7 +5,7 @@ function AdminLogin() {
   const [books, setBooks] = useState([]);
 
   useEffect(() => {
-      fetch('${import.meta.env.VITE_BACKEND_URL}/api/users')
+      fetch(`${import.meta.env.VITE_BACKEND_URL}/api/users`)
       .then((res) => res.json())
       .then((data) => setBooks(data))
       .catch((error) => {

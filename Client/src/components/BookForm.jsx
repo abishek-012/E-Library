@@ -29,7 +29,7 @@ function BookForm({ onAdd, initialData}){
         if(!form.bookname || !form.librarycode)
             return alert("Please fill all the required fields");
         const method = initialData? "PUT" : "POST";
-        const url = initialData? `${import.meta.env.VITE_BACKEND_URL}/api/users/${initialData._id}` : "${import.meta.env.VITE_BACKEND_URL}/api/users";
+        const url = initialData? `${import.meta.env.VITE_BACKEND_URL}/api/users/${initialData._id}` : `${import.meta.env.VITE_BACKEND_URL}/api/users`;
         try{
             const response = await fetch(url, {
                 method,
