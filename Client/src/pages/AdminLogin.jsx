@@ -1,38 +1,65 @@
-import { useState, useEffect } from 'react';
-import BookCard from '../components/BookCard';
+    import { useState } from "react";
+    import { useNavigate } from "react-router-dom";
 
-function AdminLogin() {
-  const [books, setBooks] = useState([]);
+    function AdminLogin({ setIsAdminLoggedIn }) {
+    const navigate = useNavigate();
+    const [code, setCode] = useState("");
+    const [password, setPassword] = useState("");
 
-  useEffect(() => {
-      fetch(`${import.meta.env.VITE_BACKEND_URL}/api/users`)
-      .then((res) => res.json())
-      .then((data) => setBooks(data))
-      .catch((error) => {
-        console.error('Error fetching user details: ', error);
-        alert('Failed to fetch User details. Please try again.');
-      });
-  }, []);
+    const admins = [
+        { code: "9889", password: "admin@123" },
+        { code: "1234", password: "admin@321" },
+        { code: "9876", password: "pass@123" }
+    ];
 
-  const handleDelete = async(id) => {
-    await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/users/${id}`, {
-      method: 'DELETE',
-    });
-    setBooks((prev) => prev.filter((book) => book._id!== id));
-    alert('Book deleted successfully.');
-  };
+    const handleSubmit = (e) => {
+        e.preventDefault();
 
-  return (
-    <div className="bg-[url('/bg.png')] bg-cover bg-center min-h-screen w-screen grid grid-cols-1 md:grid-cols-2 gap-4 p-6 pt-20 shadow-md">
-      {books.length === 0 ? (
-        <p className="text-black p-2 rounded">No books issued yet.</p>
-      ) : (
-        books.map((b) => (
-          <BookCard key={b._id} book={b} onDelete={handleDelete} />
-        ))
-      )}
-    </div>
-  );
-}
+        const isValid = admins.some(
+        (admin) => admin.code === code && admin.password === password
+        );
 
-export default AdminLogin;
+        if (isValid) {
+        setIsAdminLoggedIn(true);
+        navigate("/admindashboard");
+        } else {
+        alert("Invalid Admin Code or Password");
+        }
+    };
+    
+
+
+    return (
+        <div className="bg-[url('/bg.png')] bg-cover bg-center min-h-screen flex items-center justify-center bg-gray-100 pt-16">
+        <div className="bg-white p-8 rounded-2xl shadow-2xl w-full max-w-sm">
+            <h2 className="text-3xl font-bold mb-4 text-center">Admin Login</h2>
+            <form className="space-y-4" onSubmit={handleSubmit}>
+            <input
+                type="text"
+                placeholder="Admin Code"
+                className="w-full px-4 py-2 border rounded"
+                required
+                value={code}
+                onChange={(e) => setCode(e.target.value)}
+            />
+            <input
+                type="password"
+                placeholder="Password"
+                className="w-full px-4 py-2 border rounded"
+                required
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+            />
+            <button
+                type="submit"
+                className="w-full bg-black text-white py-2 rounded-xl hover:bg-blue-600"
+            >
+                Login
+            </button>
+            </form>
+        </div>
+        </div>
+    );
+    }
+
+    export default AdminLogin;
