@@ -58,7 +58,7 @@ function BookForm({ onAdd, initialData}){
                 <input className="w-full rounded-xl p-2 border border-black text-black mb-3" type="text" name="name" placeholder="Enter Your Name" value={form.name} onChange={handleChange} required/>
                 <input className="w-full rounded-xl p-2 border border-black text-black mb-3" type="number" name="librarycode" placeholder="Enter Library Code" value={form.librarycode} onChange={handleChange} />
                 <input className="w-full rounded-xl p-2 border border-black text-black mb-4" type="number" name="duration" placeholder="Enter Duration In Days" value={form.duration} onChange={handleChange} />
-                <button onClick={() => navigate("/admindashboard")} type="submit" className="bg-black/90 hover:bg-black/30 rounded-2xl text-white py-2 px-4 rounded-2xls">{initialData ? "Edit" : "Borrow"}</button>
+                <button type="submit" className="bg-black/90 hover:bg-black/30 rounded-2xl text-white py-2 px-4 rounded-2xls">{initialData ? "Edit" : "Borrow"}</button>
             </form>
         </div>
     )
